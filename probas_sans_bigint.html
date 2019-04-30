@@ -75,56 +75,28 @@
 	
 	<body>
 		<div>
-			<!--<div id="calculator">
-				<div class="inline">Chances élite: 4.61%</div> ||
-				<div class="inline">Tirages x10: <input type="number" id="nb_x10" max="100" min="1"/></div> ||
-				<div class="inline">Nb élites minimum: <input type="number" id="nb_elites"max="100" min="0" /></div> ||
-				<div class="inline"><input type="button" value="Calcul" id="calcul" /></div>
-				<div id="retour-calcul"></div>
-			</div>-->
 			<div id="retour"></div>
 		</div>
 		<script>
 			const reducer = (accumulator, currentValue) => accumulator + currentValue;
 			const P = 0.0461;
-			
-			/*$(function() {
-				$('#calcul').on('click', function() {
-					var x = parseInt($('#nb_elites').val());
-					var n = parseInt($('#nb_x10').val());
-					
-					x = x < 0 ? 0 : x > 100 ? 100 : x;
-					n = n < 1 ? 1 : n > 100 ? 100 : n;
-					
-					$('#nb_elites').val(x)
-					$('#nb_x10').val(n)
-					
-					n *= 10;
-					
-					arr = [0];
-					for(var i = 0; i < x; ++i)
-						arr.push(binomialDistribution(i, P, n))
-						
-					var probability = (1 - arr.reduce(reducer));
-					$('#retour-calcul').html((probability * 100).toFixed(12) + '%');
-				});
-			});*/
+
 			
 			var n = 10;
-			var results = new Array(20);
+			var results = new Array(15);
 			
 			for(var i = 0; i < 15; ++i) {
 				results[i] = (typeof results[i] != 'undefined' && results[i] instanceof Array) ? results[i] : []
-				for(var j = 0; j < 20; ++j) {
+				for(var j = 0; j < 15; ++j) {
 					results[i][j] = j < n * (i+1) ? binomialDistribution(j+1, P, n * (i+1)) : 0;
 				}
 			}
 		
 			var resultsBkp = JSON.parse(JSON.stringify(results));
-			var probabilities = new Array(20);
+			var probabilities = new Array(15);
 
 			results.forEach(function(v, i) {
-				for(var j = 0; j < 20; ++j) {
+				for(var j = 0; j < 15; ++j) {
 					probabilities[j] = (typeof probabilities[j] != 'undefined' && probabilities[j] instanceof Array) ? probabilities[j] : []
 					var arr = j > 0 ? JSON.parse(JSON.stringify(v)).slice(0,j) : [0];
 					probabilities[j][i] = (1 - Math.pow(1-P, (i+1) * n)) - arr.reduce(reducer);
